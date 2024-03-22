@@ -16,13 +16,12 @@ def create_data_model():
 def main():
     data = create_data_model()
     
-    # Create the mip solver with the SCIP backend.
+    # Crear el solucionador de mip con el backend SCIP.
     solver = pywraplp.Solver.CreateSolver("SCIP")
 
     if not solver:
         return
 
-    # Variables
     # x[i, j] = 1 if item i is packed in bin j.
     x = {}
     for i in data["items"]:
@@ -34,8 +33,7 @@ def main():
     for j in data["bins"]:
         y[j] = solver.IntVar(0, 1, "y[%i]" % j)
 
-    # Constraints
-    # Each item must be in exactly one bin.
+    # Restricciones 
     for i in data["items"]:
         solver.Add(sum(x[i, j] for j in data["bins"]) == 1)
 
@@ -46,7 +44,7 @@ def main():
             <= y[j] * data["bin_capacity"]
         )
 
-    # Objective: minimize the number of bins used.
+    # minimizar el número de contenedores utilizados.
     solver.Minimize(solver.Sum([y[j] for j in data["bins"]]))
 
     print(f"Solving with {solver.SolverVersion()}")
