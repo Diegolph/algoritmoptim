@@ -1,0 +1,50 @@
+import sys
+
+class Grafo:
+    def __init__(self, vertices):
+        self.V = vertices
+        self.grafo = [[0] * vertices for _ in range(vertices)]
+
+    def min_distance(self, dist, spt_set):
+        min_dist = sys.maxsize
+        min_index = 0
+        for v in range(self.V):
+            if dist[v] < min_dist and not spt_set[v]:
+                min_dist = dist[v]
+                min_index = v
+        return min_index
+
+    def dijkstra(self, src):
+        dist = [sys.maxsize] * self.V
+        dist[src] = 0
+        spt_set = [False] * self.V
+
+        for _ in range(self.V):
+            u = self.min_distance(dist, spt_set)
+            spt_set[u] = True
+            for v in range(self.V):
+                if self.grafo[u][v] > 0 and not spt_set[v] and dist[v] > dist[u] + self.grafo[u][v]:
+                    dist[v] = dist[u] + self.grafo[u][v]
+
+        self.print_solution(dist)
+
+    def print_solution(self, dist):
+        print("Vertice \tDistancia desde el origen")
+        for node in range(self.V):
+            print(node, "\t\t", dist[node])
+
+grafo = Grafo(10)
+grafo.grafo = [
+    [0, 2, 0, 5, 0, 0, 0, 0, 0, 0],#a
+    [0, 0, 3, 0, 2, 0, 0, 0, 0, 0],#b
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 7],#c
+    [0, 0, 0, 0, 1, 6, 0, 0, 0, 0],#d
+    [0, 0, 0, 0, 0, 0, 2, 5, 0, 0],#e
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 5],#f
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 3],#g
+    [0, 0, 0, 0, 0, 0, 0, 0, 4, 0],#h
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 1],#i
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]#z
+]
+
+grafo.dijkstra(0)
