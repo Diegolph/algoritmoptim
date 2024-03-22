@@ -1,0 +1,39 @@
+# Definición de la función para el algoritmo de Floyd-Warshall
+def floyd_warshall(graph):
+    # Número de vértices en el grafo
+    V = len(graph)
+    
+    # Inicializar la matriz de distancias con las distancias directas entre los vértices
+    dist = graph
+    
+    # Aplicar el algoritmo de Floyd-Warshall
+    for k in range(V):
+        for i in range(V):
+            for j in range(V):
+                # Si el vértice k es un camino más corto entre el vértice i y el vértice j,
+                # entonces actualizamos el valor de dist[i][j]
+                dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])
+    
+    return dist
+
+# Ejemplo de uso
+if __name__ == "__main__":
+    # Grafo de ejemplo representado como una matriz de adyacencia
+    graph = [
+        [0, 5, float('inf'), 10, float('inf'), float('inf'), float('inf'), float('inf')],
+        [float('inf'), 0, 3, float('inf'), float('inf'), float('inf'), 2, float('inf')],
+        [float('inf'), float('inf'), 0, 1, float('inf'), float('inf'), float('inf'), 4],
+        [float('inf'), float('inf'), float('inf'), 0, float('inf'), float('inf'), float('inf'), float('inf')],
+        [float('inf'), float('inf'), float('inf'), 2, 0, 7, float('inf'), float('inf')],
+        [float('inf'), float('inf'), float('inf'), float('inf'), float('inf'), 0, float('inf'), 3],
+        [float('inf'), float('inf'), float('inf'), float('inf'), float('inf'), float('inf'), 0, 1],
+        [float('inf'), float('inf'), float('inf'), float('inf'), float('inf'), float('inf'), float('inf'), 0]
+    ]
+
+    # Aplicar el algoritmo de Floyd-Warshall al grafo
+    result = floyd_warshall(graph)
+
+    # Imprimir las distancias más cortas entre todos los pares de vértices
+    print("Las distancias más cortas entre todos los pares de vértices son:")
+    for row in result:
+        print(row)
